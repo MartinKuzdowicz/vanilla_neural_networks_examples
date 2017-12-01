@@ -11,6 +11,7 @@ class SingleLayerNeuralNetwork:
         return 1 / (1 + exp(-x))
 
     def __sigmoid_derivative(self, x):
+        # used for backpropagation
         return x * (1 - x)
 
     def train(self, training_set_inputs, training_set_outputs, number_of_iterations):
@@ -18,8 +19,11 @@ class SingleLayerNeuralNetwork:
             output = self.predict(training_set_inputs)
             error = training_set_outputs - output
             print 'error: {}'.format(error)
+
+            # multiply the error by the input ad again by the gradient of the sigmoid curve
             adjustment = dot(training_set_inputs.T, error * self.__sigmoid_derivative(output))
             print 'adjustment: {}'.format(adjustment)
+            # adjust the weights
             self.synaptic_weights = adjustment + self.synaptic_weights
 
     def predict(self, inputs):
